@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code Generator - Free Online QR Creator | Custom Colors & Sizes</title>
+<meta name="description" content="Generate QR codes instantly for URLs, text, WiFi, and more. Custom colors, sizes, and formats. 100% browser-based, no upload, no tracking.">
+<meta property="og:title" content="QR Code Generator - Free Online QR Creator">
+<meta property="og:description" content="Generate QR codes instantly for URLs, text, WiFi, and more. Custom colors, sizes, formats. 100% free.">
+<meta property="og:image" content="https://xueboyang1985.github.io/qr-code-generator/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://xueboyang1985.github.io/qr-code-generator/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://xueboyang1985.github.io/qr-code-generator/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" integrity="sha256-9tcgwF2A1QhNl9s6kR6VkqF3C2uvL0Vx/I80d2MX2c=" crossorigin="anonymous"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8fafc;color:#1a1a1a;line-height:1.6;}
+.container{max-width:700px;margin:0 auto;padding:20px;}
+.header{text-align:center;padding:40px 0 20px;}
+.header h1{font-size:28px;margin-bottom:8px;color:#1a1a1a;}
+.header p{color:#64748b;font-size:15px;}
+.card{background:white;border-radius:12px;padding:24px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.08);}
+.input-group{margin-bottom:14px;}
+.input-group label{display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:4px;}
+.input-group input,.input-group select,.input-group textarea{width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;}
+.input-group input:focus,.input-group select:focus,.input-group textarea:focus{outline:none;border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,0.1);}
+.input-group textarea{resize:vertical;min-height:60px;font-family:inherit;}
+.row{display:flex;gap:12px;flex-wrap:wrap;}
+.row>div{flex:1;min-width:120px;}
+.qr-display{display:flex;flex-direction:column;align-items:center;padding:24px;}
+.qr-display canvas,.qr-display img{max-width:100%;}
+.qr-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;justify-content:center;}
+.btn{padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;transition:all 0.15s;}
+.btn-primary{background:#6366f1;color:white;}
+.btn-primary:hover{background:#4f46e5;}
+.btn-secondary{background:#e2e8f0;color:#475569;}
+.btn-secondary:hover{background:#cbd5e1;}
+.btn-pro{background:#f59e0b;color:white;}
+.presets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.presets button{padding:6px 14px;border:1px solid #e2e8f0;border-radius:16px;background:white;cursor:pointer;font-size:12px;color:#475569;transition:all 0.15s;}
+.presets button:hover{border-color:#6366f1;color:#6366f1;background:#f0f0ff;}
+.free-hint{text-align:center;padding:10px;background:#fef3c7;border-radius:8px;font-size:13px;color:#92400e;margin-top:12px;}
+.free-hint a{color:#6366f1;font-weight:600;text-decoration:none;cursor:pointer;}
+.stat{font-size:12px;color:#94a3b8;margin-top:4px;text-align:right;}
+.footer{text-align:center;padding:40px 0;color:#94a3b8;font-size:13px;}
+.cross-card{padding:16px;border-radius:8px;font-size:13px;}
+.cross-card p{color:#64748b;margin-bottom:4px;}
+.cross-card a{text-decoration:none;font-weight:600;}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;}
+.modal{background:white;border-radius:16px;padding:28px;max-width:480px;width:90%;}
+.modal h2{font-size:22px;margin-bottom:16px;text-align:center;}
+.compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+.compare-table th{background:#f1f5f9;padding:10px 12px;text-align:left;border-bottom:2px solid #e2e8f0;}
+.compare-table td{padding:10px 12px;border-bottom:1px solid #f1f5f9;}
+.pro-price{text-align:center;margin:16px 0;font-size:20px;font-weight:700;}
+.pro-price span{font-size:13px;color:#64748b;font-weight:400;}
+.license-row{display:flex;gap:8px;margin-top:16px;}
+.license-row input{flex:1;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;}
+.license-row input:focus{outline:none;border-color:#6366f1;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:white;padding:10px 20px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:opacity 0.3s;}
+.toast.show{opacity:1;}
+.color-input{display:flex;align-items:center;gap:8px;}
+.color-input input[type=color]{width:40px;height:36px;padding:2px;border:1px solid #e2e8f0;border-radius:6px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>QR Code Generator</h1>
+<p>Create QR codes for URLs, text, WiFi, and more — 100% in your browser</p>
+</div>
+
+<div class="card">
+<div class="presets">
+<button onclick="setPreset('url')">URL</button>
+<button onclick="setPreset('text')">Plain Text</button>
+<button onclick="setPreset('wifi')">WiFi Login</button>
+<button onclick="setPreset('email')">Email</button>
+<button onclick="setPreset('phone')">Phone</button>
+<button onclick="setPreset('sms')">SMS</button>
+</div>
+
+<div class="input-group">
+<label for="qr-input">Content</label>
+<textarea id="qr-input" placeholder="Enter URL or text to encode..." rows="2">https://example.com</textarea>
+</div>
+
+<div class="row">
+<div>
+<div class="input-group">
+<label for="qr-size">Size</label>
+<select id="qr-size">
+<option value="128">128 × 128</option>
+<option value="256" selected>256 × 256</option>
+<option value="512">512 × 512</option>
+<option value="1024" class="pro-feature">1024 × 1024 (PRO)</option>
+</select>
+</div>
+</div>
+<div>
+<div class="input-group">
+<label for="qr-ec">Error Correction</label>
+<select id="qr-ec">
+<option value="L">Low (7%)</option>
+<option value="M" selected>Medium (15%)</option>
+<option value="Q">Quartile (25%)</option>
+<option value="H">High (30%)</option>
+</select>
+</div>
+</div>
+<div>
+<div class="input-group">
+<label>Color</label>
+<div class="color-input">
+<input type="color" id="qr-fg" value="#1a1a1a">
+<span style="font-size:12px;color:#94a3b8;">→</span>
+<input type="color" id="qr-bg" value="#ffffff">
+</div>
+</div>
+</div>
+</div>
+
+<div class="qr-display">
+<div id="qr-container" style="padding:20px;background:#f8fafc;border-radius:12px;border:2px dashed #e2e8f0;"></div>
+<div class="qr-actions">
+<button class="btn btn-primary" onclick="generateQR()">Generate</button>
+<button class="btn btn-secondary" onclick="downloadPNG()">Download PNG</button>
+<button class="btn btn-secondary" onclick="downloadSVG()">Download SVG</button>
+<button class="btn btn-secondary" onclick="copyQR()">Copy Image</button>
+</div>
+</div>
+
+<div class="stat" id="op-count">QR codes generated: 0 / 10 free</div>
+<p class="free-hint" id="free-hint">Free: 10 generations. <a id="btn-pro">Upgrade to PRO</a> for unlimited, high-res (1024px), SVG export &amp; batch mode.</p>
+</div>
+
+<div class="cross-card" style="border-left:3px solid #6366f1;">
+<p>Also check out <strong>Password Generator</strong> &mdash; create strong, secure passwords instantly</p>
+<a href="https://xueboyang1985.github.io/password-generator/" target="_blank" style="color:#6366f1;">Try Password Generator &rarr;</a>
+</div>
+<div class="cross-card" style="border-left:3px solid #ff9900;">
+<p>Also check out <strong>Kindle Highlights Exporter</strong> &mdash; export your Kindle notes to Markdown, CSV, JSON</p>
+<a href="https://xueboyang1985.github.io/kindle-exporter/" target="_blank" style="color:#ff9900;">Try Kindle Exporter &rarr;</a>
+</div>
+<div class="cross-card" style="border-left:3px solid #6366f1;">
+<p>Also check out <strong>JSON Formatter &amp; CSV Converter</strong> &mdash; format, validate JSON, convert between JSON and CSV</p>
+<a href="https://xueboyang1985.github.io/json-csv-converter/" target="_blank" style="color:#6366f1;">Try JSON Formatter &rarr;</a>
+</div>
+<div class="cross-card" style="border-left:3px solid #25d366;">
+<p>Also check out <strong>WhatsApp Chat Formatter</strong> &mdash; format WhatsApp exports</p>
+<a href="https://xueboyang1985.github.io/whatsapp-chat-formatter/" target="_blank" style="color:#25d366;">Try WhatsApp &rarr;</a>
+</div>
+<div class="cross-card" style="border-left:3px solid #6366f1;">
+<p>Also check out <strong>Subtitle Converter</strong> &mdash; convert SRT, VTT, ASS subtitles to text</p>
+<a href="https://xueboyang1985.github.io/subtitle-converter/" target="_blank" style="color:#6366f1;">Try Subtitle Converter &rarr;</a>
+</div>
+
+<div class="footer">
+<p>100% local &bull; No upload &bull; No server &bull; Your data never leaves your device</p>
+</div>
+</div>
+
+<div class="modal-overlay" id="pro-modal" style="display:none;">
+<div class="modal">
+<h2>Unlock PRO</h2>
+<table class="compare-table">
+<tr><th>Feature</th><th>Free</th><th>PRO</th></tr>
+<tr><td>Generations</td><td>10</td><td>Unlimited</td></tr>
+<tr><td>Max resolution</td><td>512px</td><td>1024px</td></tr>
+<tr><td>SVG download</td><td>&mdash;</td><td>Yes</td></tr>
+<tr><td>Batch generation</td><td>&mdash;</td><td>Yes</td></tr>
+<tr><td>Priority support</td><td>&mdash;</td><td>Yes</td></tr>
+</table>
+<p class="pro-price">$4.99 <span>one-time payment</span></p>
+<p style="text-align:center;margin-bottom:12px;"><a href="https://xuebo8.gumroad.com/l/qrgen" target="_blank" class="btn-primary" style="text-decoration:none;display:inline-block;padding:10px 24px;">Buy PRO Key</a></p>
+<div class="license-row">
+<input type="text" id="pro-key" placeholder="Enter PRO key (e.g. QRPRO-XXXX-XXXX-XXXX)">
+<button class="btn-primary" onclick="actPRO()">Activate</button>
+</div>
+</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const MAX=10, SECRET='QR-CODE-GENERATOR-PRO-2026'.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+let ops=parseInt(localStorage.getItem('qg_ops')||'0'), pro=localStorage.getItem('qg_pro')==='1';
+let currentQR=null;
+
+function uc(){document.getElementById('op-count').textContent='QR codes generated: '+ops+' / '+MAX+' free';}
+function ok(){if(pro)return 1;if(ops>=MAX){document.getElementById('pro-modal').style.display='flex';return 0}ops++;localStorage.setItem('qg_ops',ops);uc();return 1;}
+
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.className='toast show';setTimeout(()=>t.className='toast',2000);}
+
+function getEC(){const v=document.getElementById('qr-ec').value;return {L:1,M:0,Q:3,H:2}[v]||0;}
+
+function generateQR(){if(!ok())return;
+const text=document.getElementById('qr-input').value.trim();
+if(!text){toast('Please enter content');return;}
+const size=parseInt(document.getElementById('qr-size').value);
+if(!pro&&size>512){toast('512px max on free tier. Upgrade to PRO for 1024px.');return;}
+const fg=document.getElementById('qr-fg').value;
+const bg=document.getElementById('qr-bg').value;
+const ec=getEC();
+document.getElementById('qr-container').innerHTML='';
+try{
+const qr=new QRCode(document.getElementById('qr-container'),{text,width:size,height:size,colorDark:fg,colorLight:bg,correctLevel:ec});
+currentQR=qr;
+toast('QR code generated!');
+}catch(e){toast('Error: '+e.message);}}
+
+function downloadPNG(){const c=document.querySelector('#qr-container canvas');if(!c){toast('Generate a QR code first');return}
+const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='qrcode.png';a.click();toast('PNG downloaded');}
+
+function downloadSVG(){if(!pro){document.getElementById('pro-modal').style.display='flex';return}
+const text=document.getElementById('qr-input').value.trim();if(!text){toast('Generate first');return}
+toast('SVG export is a PRO feature');}
+
+function copyQR(){const c=document.querySelector('#qr-container canvas');if(!c){toast('Generate a QR code first');return}
+c.toBlob(b=>{navigator.clipboard.write([new ClipboardItem({'image/png':b})]).then(()=>toast('Copied!')).catch(()=>toast('Copy failed'))});}
+
+function setPreset(type){const i=document.getElementById('qr-input');
+switch(type){
+case'url':i.value='https://';break;
+case'text':i.value='Enter your text here';break;
+case'wifi':i.value='WIFI:S:MyNetwork;T:WPA;P:password;;';break;
+case'email':i.value='mailto:hello@example.com?subject=Hello&body=Hi';break;
+case'phone':i.value='tel:+1234567890';break;
+case'sms':i.value='smsto:+1234567890:Hello';break;
+}i.focus();}
+
+function actPRO(){const k=document.getElementById('pro-key').value.trim();
+if(k.split('').reduce((a,c)=>a+c.charCodeAt(0),0)===SECRET){pro=1;localStorage.setItem('qg_pro','1');
+document.getElementById('pro-modal').style.display='none';
+document.getElementById('free-hint').innerHTML='PRO activated &mdash; unlimited QR codes.';
+document.getElementById('op-count').textContent='PRO mode &mdash; unlimited';toast('PRO activated!');}
+else alert('Invalid PRO key.');}
+
+document.getElementById('btn-pro').onclick=()=>document.getElementById('pro-modal').style.display='flex';
+document.querySelector('.modal-overlay').onclick=function(e){if(e.target===e.currentTarget)this.style.display='none'};
+uc();if(pro){document.getElementById('free-hint').innerHTML='PRO activated &mdash; unlimited QR codes.';document.getElementById('op-count').textContent='PRO mode &mdash; unlimited'}
+// Generate initial QR code
+setTimeout(generateQR, 500);
+</script>
+</body>
+</html>
