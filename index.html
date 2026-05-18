@@ -13,7 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://xueboyang1985.github.io/qr-code-generator/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" integrity="sha256-9tcgwF2A1QhNl9s6kR6VkqF3C2uvL0Vx/I80d2MX2c=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" ></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8fafc;color:#1a1a1a;line-height:1.6;}
@@ -185,7 +185,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div id="toast" class="toast"></div>
 
 <script>
-const MAX=10, SECRET='QR-CODE-GENERATOR-PRO-2026'.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+const MAX=10;
 let ops=parseInt(localStorage.getItem('qg_ops')||'0'), pro=localStorage.getItem('qg_pro')==='1';
 let currentQR=null;
 
@@ -231,12 +231,7 @@ case'phone':i.value='tel:+1234567890';break;
 case'sms':i.value='smsto:+1234567890:Hello';break;
 }i.focus();}
 
-function actPRO(){const k=document.getElementById('pro-key').value.trim();
-if(k.split('').reduce((a,c)=>a+c.charCodeAt(0),0)===SECRET){pro=1;localStorage.setItem('qg_pro','1');
-document.getElementById('pro-modal').style.display='none';
-document.getElementById('free-hint').innerHTML='PRO activated &mdash; unlimited QR codes.';
-document.getElementById('op-count').textContent='PRO mode &mdash; unlimited';toast('PRO activated!');}
-else alert('Invalid PRO key.');}
+function actPRO(){const k=document.getElementById('pro-key').value.trim();if(!k||k.length<10){alert('Enter your Gumroad license key from your purchase receipt.');return}fetch('https://api.gumroad.com/v2/licenses/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_permalink:'evdcgem',license_key:k})}).then(r=>r.json()).then(d=>{if(d.success){pro=1;localStorage.setItem('qg_pro','1');document.getElementById('pro-modal').style.display='none';document.getElementById('free-hint').innerHTML='PRO activated &mdash; unlimited QR codes.';document.getElementById('op-count').textContent='PRO mode &mdash; unlimited';alert('PRO activated!')}else alert('Invalid PRO key. Check your Gumroad receipt.')}).catch(e=>alert('Could not verify license. Check internet connection.'))}
 
 document.getElementById('btn-pro').onclick=()=>document.getElementById('pro-modal').style.display='flex';
 document.querySelector('.modal-overlay').onclick=function(e){if(e.target===e.currentTarget)this.style.display='none'};
