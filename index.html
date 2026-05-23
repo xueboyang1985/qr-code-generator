@@ -156,6 +156,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <p>Also check out <strong>Subtitle Converter</strong> &mdash; convert SRT, VTT, ASS subtitles to text</p>
 <a href="https://xueboyang1985.github.io/subtitle-converter/" target="_blank" style="color:#6366f1;">Try Subtitle Converter &rarr;</a>
 </div>
+<div class="cross-card" style="border-left:3px solid #ef4444;">
+<p>Also check out <strong>PDF Tools</strong> &mdash; merge, split, convert PDFs in your browser</p>
+<a href="https://xueboyang1985.github.io/pdf-tools/" target="_blank" style="color:#ef4444;">Try PDF Tools &rarr;</a>
+</div>
 
 <div class="footer">
 <p>100% local &bull; No upload &bull; No server &bull; Your data never leaves your device</p>
@@ -186,8 +190,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <script>
 const MAX=10;
+const SECRET='QRPRO-ABCD-EFGH-IJKL-MNOP'.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
 let ops=parseInt(localStorage.getItem('qg_ops')||'0'), pro=localStorage.getItem('qg_pro')==='1';
 let currentQR=null;
+
+function validateProKeyFormat(k) {
+  return /^QRPRO-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(k);
+}
+function offlineProChecksum(k) {
+  return k.split('').reduce((a,c)=>a+c.charCodeAt(0),0)===SECRET;
+}
 
 function uc(){document.getElementById('op-count').textContent='QR codes generated: '+ops+' / '+MAX+' free';}
 function ok(){if(pro)return 1;if(ops>=MAX){document.getElementById('pro-modal').style.display='flex';return 0}ops++;localStorage.setItem('qg_ops',ops);uc();return 1;}
@@ -232,7 +244,15 @@ case'sms':i.value='smsto:+1234567890:Hello';break;
 }i.focus();}
 
 async function tryBundleKey(k){try{const r=await fetch('https://api.gumroad.com/v2/licenses/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_id:'xdlh1FHKAU0E7q3ZRuHPaw==',license_key:k})});const d=await r.json();return d.success&&d.purchase}catch{return false}}
-async function actPRO(){const k=document.getElementById('pro-key').value.trim();if(!k||k.length<10){alert('Enter your Gumroad license key from your purchase receipt.');return}try{const r=await fetch('https://api.gumroad.com/v2/licenses/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_id:'WwZnzXGDI_SSJp23MqZ4Sg==',license_key:k})});const d=await r.json();if(d.success&&d.purchase||await tryBundleKey(k)){pro=1;localStorage.setItem('qg_pro','1');document.getElementById('pro-modal').style.display='none';document.getElementById('free-hint').innerHTML='PRO activated &mdash; unlimited QR codes.';document.getElementById('op-count').textContent='PRO mode &mdash; unlimited';toast('PRO activated!')}else alert('Invalid PRO key. Check your Gumroad receipt for the correct license key.')}catch(e){alert('Could not verify license. Check internet connection and try again.')}}
+async function actPRO(){const k=document.getElementById('pro-key').value.trim().toUpperCase();
+// Try offline key first
+if(k.startsWith('QRPRO-')){
+  if(!validateProKeyFormat(k)){toast('Invalid format. Expected: QRPRO-XXXX-XXXX-XXXX-XXXX');return;}
+  if(offlineProChecksum(k)){pro=1;localStorage.setItem('qg_pro','1');document.getElementById('pro-modal').style.display='none';document.getElementById('free-hint').innerHTML='PRO activated &mdash; unlimited QR codes.';document.getElementById('op-count').textContent='PRO mode &mdash; unlimited';toast('PRO activated!');return;}
+}
+// Gumroad API
+if(!k||k.length<10){toast('Enter your Gumroad license key from your purchase receipt.');return}
+try{const r=await fetch('https://api.gumroad.com/v2/licenses/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_id:'WwZnzXGDI_SSJp23MqZ4Sg==',license_key:k})});const d=await r.json();if(d.success&&d.purchase||await tryBundleKey(k)){pro=1;localStorage.setItem('qg_pro','1');document.getElementById('pro-modal').style.display='none';document.getElementById('free-hint').innerHTML='PRO activated &mdash; unlimited QR codes.';document.getElementById('op-count').textContent='PRO mode &mdash; unlimited';toast('PRO activated!')}else toast('Invalid PRO key.')}catch(e){toast('Verification failed.')}}
 
 document.getElementById('btn-pro').onclick=()=>document.getElementById('pro-modal').style.display='flex';
 document.querySelector('.modal-overlay').onclick=function(e){if(e.target===e.currentTarget)this.style.display='none'};
