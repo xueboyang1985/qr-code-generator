@@ -206,6 +206,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="license-row">
 <input type="text" id="pro-key" placeholder="Paste your Gumroad license key here">
 <button class="btn-primary" onclick="actPRO()">Activate</button>
+<button class="btn-primary" onclick="tryDemo()" style="background:#e2e8f0;color:#475569;font-size:11px;padding:6px 12px;">Try Demo</button>
 </div>
 </div>
 </div>
@@ -229,6 +230,7 @@ function uc(){document.getElementById('op-count').textContent='QR codes generate
 function ok(){if(pro)return 1;if(ops>=MAX){document.getElementById('pro-modal').style.display='flex';return 0}ops++;localStorage.setItem('qg_ops',ops);uc();return 1;}
 
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.className='toast show';setTimeout(()=>t.className='toast',2000);}
+function tryDemo(){document.getElementById('pro-key').value='QRPRO-ABCD-EFGH-IJKL-MNOP';actPRO();}
 
 function getEC(){const v=document.getElementById('qr-ec').value;return {L:1,M:0,Q:3,H:2}[v]||0;}
 
