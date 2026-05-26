@@ -4,30 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QR Code Generator - Free Online QR Creator | Custom Colors & Sizes</title>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "QR Code Generator - Free Online QR Creator",
-  "url": "https://xueboyang1985.github.io/qr-code-generator/",
-  "description": "Generate QR codes instantly for URLs, text, WiFi, and more. Custom colors, sizes, and formats. 100% browser-based.",
-  "applicationCategory": "Multimedia",
-  "operatingSystem": "All",
-  "browserRequirements": "Requires JavaScript",
-  "offers": {
-    "@type": "Offer",
-    "price": "9.99",
-    "priceCurrency": "USD"
-  },
-  "featureList": [
-    "QR code generation",
-    "Custom colors and sizes",
-    "WiFi QR codes",
-    "SVG export"
-  ]
-}
-</script>
-
 <meta name="description" content="Generate QR codes instantly for URLs, text, WiFi, and more. Custom colors, sizes, and formats. 100% browser-based, no upload, no tracking.">
 <meta property="og:title" content="QR Code Generator - Free Online QR Creator">
 <meta property="og:description" content="Generate QR codes instantly for URLs, text, WiFi, and more. Custom colors, sizes, formats. 100% free.">
@@ -37,7 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://xueboyang1985.github.io/qr-code-generator/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" ></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8fafc;color:#1a1a1a;line-height:1.6;}
@@ -180,15 +156,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <p>Also check out <strong>Subtitle Converter</strong> &mdash; convert SRT, VTT, ASS subtitles to text</p>
 <a href="https://xueboyang1985.github.io/subtitle-converter/" target="_blank" style="color:#6366f1;">Try Subtitle Converter &rarr;</a>
 </div>
-<div class="cross-card" style="border-left:3px solid #ef4444;">
-<p>Also check out <strong>PDF Tools</strong> &mdash; merge, split, convert PDFs in your browser</p>
-<a href="https://xueboyang1985.github.io/pdf-tools/" target="_blank" style="color:#ef4444;">Try PDF Tools &rarr;</a>
-</div>
-<div class="cross-card" style="border-left:3px solid #6366f1;">
-<p>Also check out <strong>AI Background Remover</strong> &mdash; remove image backgrounds instantly with AI, 100% browser-based</p>
-<a href="https://xueboyang1985.github.io/background-remover/" target="_blank" style="color:#6366f1;">Try AI Background Remover &rarr;</a>
-</div>
-
 
 <div class="footer">
 <p>100% local &bull; No upload &bull; No server &bull; Your data never leaves your device</p>
@@ -207,13 +174,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <tr><td>Priority support</td><td>&mdash;</td><td>Yes</td></tr>
 </table>
 <p class="pro-price">$9.99 <span>one-time payment</span></p>
-<p style="text-align:center;margin-bottom:12px;"><a href="javascript:void(0)" data-gumroad="https://xuebo8.gumroad.com/l/evdcgem" id="btn-buy-pro" class="btn-primary" style="text-decoration:none;display:inline-block;padding:10px 24px;">Buy PRO Key</a></p>
+<p style="text-align:center;margin-bottom:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+<a href="javascript:void(0)" data-gumroad="https://xuebo8.gumroad.com/l/evdcgem" id="btn-buy-pro" class="btn-primary" style="text-decoration:none;display:inline-block;padding:10px 24px;">Buy PRO $9.99</a>
+<a href="javascript:void(0)" data-gumroad="https://xuebo8.gumroad.com/l/skxcpj" id="btn-buy-bundle" class="btn-primary" style="text-decoration:none;display:inline-block;padding:10px 24px;background:#059669;">Buy Bundle $19.99</a>
+</p>
 <div class="license-row">
-<input type="text" id="pro-key" placeholder="Paste your Gumroad license key here">
+<input type="text" id="pro-key" placeholder="Enter PRO key (e.g. QRPRO-XXXX-XXXX-XXXX)">
 <button class="btn-primary" onclick="actPRO()">Activate</button>
-<button class="btn-primary" onclick="tryDemo()" style="background:#e2e8f0;color:#475569;font-size:11px;padding:6px 12px;">Try Demo</button>
 </div>
-<p style="text-align:center;font-size:12px;color:#94a3b8;margin-top:8px;"><a href="guide.html" style="color:#6366f1;">User Guide & FAQ</a></p>
 </div>
 </div>
 
@@ -221,22 +189,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <script>
 const MAX=10;
-const SECRET='QRPRO-ABCD-EFGH-IJKL-MNOP'.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
-let ops=0, pro=0; try { ops=parseInt(localStorage.getItem('qg_ops')||'0'); pro=localStorage.getItem('qg_pro')==='1'; } catch(e) {}
+let ops=parseInt(localStorage.getItem('qg_ops')||'0'), pro=localStorage.getItem('qg_pro')==='1';
 let currentQR=null;
-
-function validateProKeyFormat(k) {
-  return /^QRPRO-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(k);
-}
-function offlineProChecksum(k) {
-  return k.split('').reduce((a,c)=>a+c.charCodeAt(0),0)===SECRET;
-}
 
 function uc(){document.getElementById('op-count').textContent='QR codes generated: '+ops+' / '+MAX+' free';}
 function ok(){if(pro)return 1;if(ops>=MAX){document.getElementById('pro-modal').style.display='flex';return 0}ops++;localStorage.setItem('qg_ops',ops);uc();return 1;}
 
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.className='toast show';setTimeout(()=>t.className='toast',2000);}
-function tryDemo(){document.getElementById('pro-key').value='QRPRO-ABCD-EFGH-IJKL-MNOP';actPRO();}
 
 function getEC(){const v=document.getElementById('qr-ec').value;return {L:1,M:0,Q:3,H:2}[v]||0;}
 
@@ -276,32 +235,22 @@ case'sms':i.value='smsto:+1234567890:Hello';break;
 }i.focus();}
 
 async function tryBundleKey(k){try{const r=await fetch('https://api.gumroad.com/v2/licenses/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_id:'xdlh1FHKAU0E7q3ZRuHPaw==',license_key:k})});const d=await r.json();return d.success&&d.purchase}catch{return false}}
-async function actPRO(){const k=document.getElementById('pro-key').value.trim().toUpperCase();
-// Try offline key first
-if(k.startsWith('QRPRO-')){
-  if(!validateProKeyFormat(k)){toast('Invalid format. Expected: QRPRO-XXXX-XXXX-XXXX-XXXX');return;}
-  if(offlineProChecksum(k)){pro=1;localStorage.setItem('qg_pro','1');document.getElementById('pro-modal').style.display='none';document.getElementById('free-hint').innerHTML='PRO activated &mdash; unlimited QR codes.';document.getElementById('op-count').textContent='PRO mode &mdash; unlimited';toast('PRO activated!');return;}
-}
-// Gumroad API
-if(!k||k.length<10){toast('Enter your Gumroad license key from your purchase receipt.');return}
-try{const r=await fetch('https://api.gumroad.com/v2/licenses/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_id:'WwZnzXGDI_SSJp23MqZ4Sg==',license_key:k})});const d=await r.json();if(d.success&&d.purchase||await tryBundleKey(k)){pro=1;localStorage.setItem('qg_pro','1');document.getElementById('pro-modal').style.display='none';document.getElementById('free-hint').innerHTML='PRO activated &mdash; unlimited QR codes.';document.getElementById('op-count').textContent='PRO mode &mdash; unlimited';toast('PRO activated!')}else toast('Invalid PRO key.')}catch(e){toast('Verification failed.')}}
+async function actPRO(){const k=document.getElementById('pro-key').value.trim();if(!k||k.length<10){alert('Enter your Gumroad license key from your purchase receipt.');return}try{const r=await fetch('https://api.gumroad.com/v2/licenses/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_id:'WwZnzXGDI_SSJp23MqZ4Sg==',license_key:k})});const d=await r.json();if(d.success&&d.purchase||await tryBundleKey(k)){pro=1;localStorage.setItem('qg_pro','1');document.getElementById('pro-modal').style.display='none';document.getElementById('free-hint').innerHTML='PRO activated &mdash; unlimited QR codes.';document.getElementById('op-count').textContent='PRO mode &mdash; unlimited';alert('PRO activated!')}else alert('Invalid PRO key. Check your Gumroad receipt.')}catch(e){alert('Could not verify license. Check internet connection.')}}
 
 document.getElementById('btn-pro').onclick=()=>document.getElementById('pro-modal').style.display='flex';
 document.querySelector('.modal-overlay').onclick=function(e){if(e.target===e.currentTarget)this.style.display='none'};
 uc();if(pro){document.getElementById('free-hint').innerHTML='PRO activated &mdash; unlimited QR codes.';document.getElementById('op-count').textContent='PRO mode &mdash; unlimited'}
 // Generate initial QR code
 setTimeout(generateQR, 500);
-
-// Buy button popup + auto-fill license key from Gumroad receipt
-document.addEventListener('DOMContentLoaded',function(){var btn=document.getElementById('btn-buy-pro');if(btn){btn.addEventListener('click',function(){var url=this.dataset.gumroad;if(!url)return;var w=Math.min(600,window.innerWidth-40);var h=Math.min(700,window.innerHeight-40);var left=Math.max(0,(window.innerWidth-w)/2);var top=Math.max(0,(window.innerHeight-h)/2);var win=window.open(url,'gumroad-checkout','width='+w+',height='+h+',left='+left+',top='+top+',menubar=no,toolbar=no,status=no');if(!win)window.location.href=url;});}});
-window.addEventListener('message',function(e){try{var d=typeof e.data==='string'?JSON.parse(e.data):e.data;if(e.origin.indexOf('gumroad.com')>=0&&d&&d.license_key){document.getElementById('pro-key').value=d.license_key;actPRO();}}catch(e1){}});
 </script>
 
 
 <script>
 // Buy PRO button - open Gumroad checkout popup
-document.addEventListener('DOMContentLoaded',function(){var btn=document.getElementById('btn-buy-pro');if(btn){btn.addEventListener('click',function(){var url=this.dataset.gumroad;if(!url)return;var w=Math.min(600,window.innerWidth-40);var h=Math.min(700,window.innerHeight-40);var left=Math.max(0,(window.innerWidth-w)/2);var top=Math.max(0,(window.innerHeight-h)/2);var win=window.open(url,'gumroad-checkout','width='+w+',height='+h+',left='+left+',top='+top+',menubar=no,toolbar=no,status=no');if(!win)window.location.href=url;});}});
+document.addEventListener('DOMContentLoaded',function(){function g(e){var btn=e.currentTarget;var url=btn.dataset.gumroad;if(!url)return;var w=Math.min(600,window.innerWidth-40);var h=Math.min(700,window.innerHeight-40);var left=Math.max(0,(window.innerWidth-w)/2);var top=Math.max(0,(window.innerHeight-h)/2);var win=window.open(url,'gumroad-checkout','width='+w+',height='+h+',left='+left+',top='+top+',menubar=no,toolbar=no,status=no');if(!win)window.location.href=url;}var btn=document.getElementById('btn-buy-pro');if(btn)btn.addEventListener('click',g);var btn2=document.getElementById('btn-buy-bundle');if(btn2)btn2.addEventListener('click',g);});
 </script>
 <script src="https://gumroad.com/js/gumroad.js"></script>
+// Auto-detect Gumroad license key after purchase
+window.addEventListener('message',function(e){try{var d=typeof e.data==='string'?JSON.parse(e.data):e.data;if(e.origin.indexOf('gumroad.com')>=0&&d&&d.license_key){document.getElementById('pro-key').value=d.license_key;actPRO();}}catch(e1){}});
 </body>
 </html>
