@@ -256,7 +256,9 @@ setTimeout(generateQR, 500);
 document.addEventListener('DOMContentLoaded',function(){function g(e){var btn=e.currentTarget;var url=btn.dataset.gumroad;if(!url)return;var w=Math.min(600,window.innerWidth-40);var h=Math.min(700,window.innerHeight-40);var left=Math.max(0,(window.innerWidth-w)/2);var top=Math.max(0,(window.innerHeight-h)/2);var win=window.open(url,'gumroad-checkout','width='+w+',height='+h+',left='+left+',top='+top+',menubar=no,toolbar=no,status=no');if(!win)window.location.href=url;}var btn=document.getElementById('btn-buy-pro');if(btn)btn.addEventListener('click',g);var btn2=document.getElementById('btn-buy-bundle');if(btn2)btn2.addEventListener('click',g);});
 </script>
 <script defer src="https://gumroad.com/js/gumroad.js"></script>
+<script>
 // Auto-detect Gumroad license key after purchase
 window.addEventListener('message',function(e){try{var d=typeof e.data==='string'?JSON.parse(e.data):e.data;if(e.origin.indexOf('gumroad.com')>=0&&d&&d.success&&d.purchase&&d.license_key){document.getElementById('pro-key').value=d.license_key;actPRO();}}catch(e1){}});
+</script>
 </body>
 </html>
