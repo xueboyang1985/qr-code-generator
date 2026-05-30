@@ -1,2 +1,5 @@
-# qr-code-generator
-Generate QR codes for URLs, text, WiFi and more. 100% browser-based, no upload, free &amp; PRO.
+# QR Code Generator
+
+Generate QR codes for URLs, text, WiFi login, email, phone, and SMS. Custom colors, download PNG.
+
+**👉 [Try QR Code Generator Online Free](https://xueboyang1985.github.io/qr-code-generator/)
